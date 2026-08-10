@@ -1,3 +1,5 @@
+
+
 import type { Config } from 'tailwindcss'
 
 const config: Config = {
@@ -8,6 +10,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['var(--font-nunito)', 'system-ui', 'sans-serif'],
+      },
       colors: {
         primary: {
           50: '#eff6ff',
@@ -33,9 +38,6 @@ const config: Config = {
           800: '#92400e',
           900: '#78350f',
         },
-      },
-      fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
       },
     },
   },

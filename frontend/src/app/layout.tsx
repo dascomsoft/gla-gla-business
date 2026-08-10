@@ -1,14 +1,19 @@
 
 
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Nunito } from 'next/font/google'
 import './globals.css'
 import { CartProvider } from '@/context/CartContext'
 import { AuthProvider } from '@/context/AuthContext'
 import { SettingsProvider } from '@/context/SettingsContext'
 import ClientLayout from '@/components/layout/ClientLayout'
 
-const inter = Inter({ subsets: ['latin'] })
+const nunito = Nunito({
+  subsets: ['latin'],
+  display: 'swap',
+  weight: ['200', '300', '400', '500', '600', '700', '800', '900'],
+  variable: '--font-nunito'
+})
 
 export const metadata: Metadata = {
   title: 'GLA GLA Business - E-Commerce',
@@ -53,7 +58,7 @@ export default function RootLayout({
       <head>
         <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
       </head>
-      <body className={inter.className}>
+      <body className={`${nunito.className} ${nunito.variable}`}>
         <AuthProvider>
           <SettingsProvider>
             <CartProvider>
