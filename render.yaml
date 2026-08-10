@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: gla-gla-business-api
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: MONGODB_URI
+        value: mongodb+srv://dascomsoft_db_user:RxxuUEhyJhtxbyri@glaglabusiness.0b1b9jo.mongodb.net/?appName=glaglabusiness
+      - key: JWT_SECRET
+        value: mon_super_secret_jwt_2024_production
+      - key: JWT_EXPIRE
+        value: 7d
+      - key: CLOUDINARY_CLOUD_NAME
+        value: dctnt4h0e
+      - key: CLOUDINARY_API_KEY
+        value: 817975129196367
+      - key: CLOUDINARY_API_SECRET
+        value: 4KIecFKDf8-3Lj38A1HwKIwkBpE
+      - key: CLIENT_URL
+        value: https://gla-gla-business.vercel.app
+      - key: RATE_LIMIT_WINDOW
+        value: 15
+      - key: RATE_LIMIT_MAX
+        value: 100
