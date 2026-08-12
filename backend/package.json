@@ -4,9 +4,10 @@
   "description": "GLA GLA Business API - E-commerce Backend",
   "main": "src/server.js",
   "scripts": {
-    "dev": "nodemon src/server.js",
+    "dev": "nodemon --require dotenv/config src/server.js dotenv_config_path=.env.local",
     "start": "node src/server.js",
     "seed": "node src/seed/seed.js",
+    "seed:dev": "node -r dotenv/config src/seed/seed.js dotenv_config_path=.env.local",
     "seed:custom": "node src/seed/custom-seed.js",
     "build": "echo 'No build step required'"
   },

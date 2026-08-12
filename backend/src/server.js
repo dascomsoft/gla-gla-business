@@ -1,10 +1,19 @@
+// NE PAS utiliser dotenv.config() ici car le script dev charge .env.local
+// En production, .env est chargé par défaut
+try {
+    require('dotenv').config();
+} catch (e) {
+    console.log('⚠️ Dotenv déjà chargé');
+}
 
-require('dotenv').config();
+console.log(`\n🌐 Environment: ${process.env.NODE_ENV || 'development'}`);
+console.log(`🗄️ Database: ${process.env.MONGODB_URI ? '✅ Configurée' : '❌ Non configurée'}`);
+console.log(`📂 Fichier chargé: ${process.env.NODE_ENV === 'development' ? '.env.local' : '.env'}\n`);
+
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
-const rateLimit = require('express-rate-limit');
 const connectDB = require('./config/database');
 const { errorHandler } = require('./middleware/errorHandler');
 
@@ -18,36 +27,25 @@ const uploadRoutes = require('./routes/uploadRoutes');
 
 const app = express();
 
+// ============ PROXY TRUST (pour Render) ============
+app.set('trust proxy', true);
+
 // ============ MIDDLEWARES ============
 
-// Security
 app.use(helmet({
   crossOriginResourcePolicy: { policy: "cross-origin" }
 }));
 
-// CORS
 app.use(cors({
   origin: process.env.CLIENT_URL || 'http://localhost:3000',
   credentials: true,
   optionsSuccessStatus: 200
 }));
 
-// Logging
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
-// Rate Limiting
-const limiter = rateLimit({
-  windowMs: parseInt(process.env.RATE_LIMIT_WINDOW) * 60 * 1000 || 15 * 60 * 1000,
-  max: parseInt(process.env.RATE_LIMIT_MAX) || 100,
-  message: 'Trop de requêtes, veuillez réessayer plus tard.',
-  standardHeaders: true,
-  legacyHeaders: false,
-});
-app.use('/api', limiter);
-
-// Body Parser
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
@@ -56,17 +54,25 @@ connectDB();
 
 // ============ ROUTES ============
 
-// Health check
+app.get('/', (req, res) => {
+  res.json({
+    status: 'OK',
+    message: 'GLA GLA Business API',
+    version: '1.0.0',
+    environment: process.env.NODE_ENV || 'development'
+  });
+});
+
 app.get('/api/health', (req, res) => {
   res.status(200).json({
     status: 'OK',
     message: 'GLA GLA Business API is running',
     timestamp: new Date().toISOString(),
-    uptime: process.uptime()
+    uptime: process.uptime(),
+    environment: process.env.NODE_ENV || 'development'
   });
 });
 
-// API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/products', productRoutes);
@@ -74,18 +80,16 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/settings', settingsRoutes);
 app.use('/api/upload', uploadRoutes);
 
-// 404 handler
 app.use((req, res) => {
   res.status(404).json({
     success: false,
-    message: 'Route non trouvée'
+    message: 'Route non trouvée',
+    path: req.originalUrl
   });
 });
 
-// Error handler
 app.use(errorHandler);
 
-// ============ START SERVER ============
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
@@ -93,19 +97,15 @@ app.listen(PORT, () => {
   🚀 GLA GLA Business API
   📡 Port: ${PORT}
   🌐 Environment: ${process.env.NODE_ENV || 'development'}
+  🗄️ Database: ${process.env.MONGODB_URI ? '✅ Connectée' : '❌ Non configurée'}
   🔗 URL: http://localhost:${PORT}
   ✅ Server is running!
   `);
 });
 
-// Handle unhandled promise rejections
 process.on('unhandledRejection', (err) => {
   console.error('Unhandled Rejection:', err);
   process.exit(1);
 });
 
-// Graceful shutdown
-process.on('SIGTERM', () => {
-  console.log('SIGTERM signal received: closing HTTP server');
-  process.exit(0);
-});
+module.exports = app;

@@ -42,26 +42,13 @@ async function forceSeed() {
       {
         name: 'Samsung Galaxy A15',
         slug: 'samsung-galaxy-a15',
-        description: 'Smartphone Samsung Galaxy A15 avec écran 6.5 pouces, 128GB, 4GB RAM',
+        description: 'Smartphone Samsung Galaxy A15 avec écran 6.5 pouces, 128GB',
         price: 85000,
         oldPrice: 95000,
         images: ['https://res.cloudinary.com/demo/image/upload/v1/samsung-galaxy-a15'],
         category: categories[1]._id,
         brand: 'Samsung',
         stock: 15,
-        available: true,
-        featured: true
-      },
-      {
-        name: 'iPhone 15 Pro Max',
-        slug: 'iphone-15-pro-max',
-        description: 'iPhone 15 Pro Max avec puce A17 Pro, écran 6.7", 256GB',
-        price: 1200000,
-        oldPrice: 1350000,
-        images: ['https://res.cloudinary.com/demo/image/upload/v1/iphone-15-pro-max'],
-        category: categories[1]._id,
-        brand: 'Apple',
-        stock: 8,
         available: true,
         featured: true
       },
@@ -77,19 +64,6 @@ async function forceSeed() {
         stock: 50,
         available: true,
         featured: false
-      },
-      {
-        name: 'Robe Femme Élégante',
-        slug: 'robe-femme-elegante',
-        description: 'Robe longue en soie naturelle, coupe évasée',
-        price: 45000,
-        oldPrice: 55000,
-        images: ['https://res.cloudinary.com/demo/image/upload/v1/robe-femme-soie'],
-        category: categories[3]._id,
-        brand: 'Élégance',
-        stock: 15,
-        available: true,
-        featured: true
       },
       {
         name: 'Casque Sony WH-1000XM5',
@@ -116,58 +90,6 @@ async function forceSeed() {
         stock: 12,
         available: true,
         featured: true
-      },
-      {
-        name: 'Apple Watch Series 9',
-        slug: 'apple-watch-9',
-        description: 'Apple Watch Series 9 avec GPS et suivi d\'activité',
-        price: 250000,
-        oldPrice: 300000,
-        images: ['https://res.cloudinary.com/demo/image/upload/v1/apple-watch-9'],
-        category: categories[6]._id,
-        brand: 'Apple',
-        stock: 5,
-        available: true,
-        featured: false
-      },
-      {
-        name: 'Sac à Dos Eastpak Padded',
-        slug: 'sac-eastpak-padded',
-        description: 'Sac à dos Eastpak Padded, résistant et confortable',
-        price: 30000,
-        oldPrice: 38000,
-        images: ['https://res.cloudinary.com/demo/image/upload/v1/eastpak-backpack'],
-        category: categories[2]._id,
-        brand: 'Eastpak',
-        stock: 20,
-        available: true,
-        featured: false
-      },
-      {
-        name: 'Mixeur Blender Pro',
-        slug: 'mixeur-blender-pro',
-        description: 'Mixeur blender professionnel avec 5 vitesses, bol 2L',
-        price: 75000,
-        oldPrice: 95000,
-        images: ['https://res.cloudinary.com/demo/image/upload/v1/blender-pro'],
-        category: categories[0]._id,
-        brand: 'Kitchen Pro',
-        stock: 7,
-        available: true,
-        featured: false
-      },
-      {
-        name: 'Parfum Chanel N°5',
-        slug: 'parfum-chanel-n5',
-        description: 'Parfum iconique Chanel N°5, Eau de Parfum 50ml',
-        price: 85000,
-        oldPrice: 100000,
-        images: ['https://res.cloudinary.com/demo/image/upload/v1/chanel-n5'],
-        category: categories[5]._id,
-        brand: 'Chanel',
-        stock: 6,
-        available: true,
-        featured: false
       }
     ]);
     console.log(`✅ ${products.length} produits créés`);
