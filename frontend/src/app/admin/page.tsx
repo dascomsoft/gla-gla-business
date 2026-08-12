@@ -7,14 +7,17 @@ import {
   ShoppingBag, 
   Clock, 
   CheckCircle, 
-  XCircle
+  XCircle,
+  LogOut
 } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import DashboardStats from '@/components/admin/DashboardStats'
 import { productService } from '@/services/productService'
 import { categoryService } from '@/services/categoryService'
 import { orderService } from '@/services/orderService'
 
 export default function AdminDashboard() {
+  const router = useRouter()
   const [stats, setStats] = useState({
     products: 0,
     categories: 0,
@@ -24,6 +27,15 @@ export default function AdminDashboard() {
     outOfStockProducts: 0
   })
   const [loading, setLoading] = useState(true)
+
+  // Fonction de déconnexion
+  const handleLogout = () => {
+    // Supprimer le token et les données admin du localStorage
+    localStorage.removeItem('adminToken')
+    localStorage.removeItem('adminData')
+    // Rediriger vers la page de connexion
+    router.push('/admin/login')
+  }
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -123,9 +135,19 @@ export default function AdminDashboard() {
 
   return (
     <div>
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-800">Dashboard</h1>
-        <p className="text-gray-600">Bienvenue dans l'administration de GLA GLA Business</p>
+      {/* Header avec bouton de déconnexion */}
+      <div className="flex justify-between items-start mb-8">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-800">Dashboard</h1>
+          <p className="text-gray-600">Bienvenue dans l'administration de GLA GLA Business</p>
+        </div>
+        <button
+          onClick={handleLogout}
+          className="flex items-center gap-2 px-4 py-2 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg transition-colors border border-red-200"
+        >
+          <LogOut className="h-4 w-4" />
+          <span className="font-medium">Déconnexion</span>
+        </button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
