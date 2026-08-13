@@ -4,16 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import {
-  ShoppingBag,
-  Menu,
-  X,
-  Phone,
-  User,
-  LogOut,
-  Settings,
-  MessageCircle
-} from 'lucide-react'
+import { ShoppingBag, Menu, X, Phone, User, LogOut, Settings, Heart, Tag } from 'lucide-react'
 import { useCart } from '@/hooks/useCart'
 import { useAuth } from '@/hooks/useAuth'
 import { useSettings } from '@/hooks/useSettings'
@@ -42,196 +33,158 @@ export default function Header({ onCartOpen }: HeaderProps) {
     { name: 'Accueil', href: '/' },
     { name: 'Produits', href: '/products' },
     { name: 'Catégories', href: '/categories' },
+    { name: 'À propos', href: '/about' },
     { name: 'Contact', href: '/contact' },
   ]
 
-  const isActive = (path: string) =>
-    pathname === path || pathname?.startsWith(path + '/')
+  const isActive = (path: string) => pathname === path || pathname?.startsWith(path + '/')
 
   return (
-    <header
-      className={`sticky top-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? 'bg-white/95 backdrop-blur-md shadow-sm shadow-slate-900/5 border-b border-slate-100'
-          : 'bg-white border-b border-transparent'
-      }`}
-    >
+    <header className={`sticky top-0 z-50 transition-all duration-300 ${
+      isScrolled ? 'bg-white shadow-md' : 'bg-white/95 backdrop-blur-sm'
+    }`}>
       <div className="container">
-        <div className="flex items-center justify-between h-16 md:h-[72px]">
-          {/* ═══ LOGO — bien visible avec fond contrasté ═══ */}
-          <Link href="/" className="flex items-center gap-3 flex-shrink-0 group">
-            {/* Fallback logo stylisé si l'image ne charge pas */}
-            <div className="relative w-20 h-20 md:w-20 md:h-20 rounded-xl  flex items-center justify-center overflow-hidden shadow-sm group-hover:shadow-md transition-shadow">
-              {/* Si tu as un logo.png, décommente ci-dessous et commente la div "G" */}
-              <Image
-                src="/logo.png"
-                alt="GLA GLA Business Logo"
-                fill
-                className="object-contain p-1.5"
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-2 flex-shrink-0">
+            <div className="flex items-center justify-center">
+              <Image 
+                src="/logo.png" 
+                alt="GLA GLA Business Logo" 
+                width={40} 
+                height={40}
+                className="h-10 w-auto"
                 priority
-              /> 
-              <span className="text-amber-400 font-bold text-lg md:text-xl">G</span>
+              />
             </div>
             <div className="hidden sm:block">
-              <span className="font-bold text-base md:text-lg text-slate-900 tracking-tight">
-                GLA GLA
-              </span>
-              <span className="font-medium text-slate-500"> Business</span>
+              <span className="font-bold text-lg text-blue-600">GLA GLA</span>
+              <span className="font-semibold text-gray-700"> Business</span>
             </div>
+            <span className="sm:hidden font-bold text-lg text-blue-600">GLA</span>
           </Link>
 
-          {/* ═══ DESKTOP NAVIGATION ═══ */}
-          <nav className="hidden md:flex items-center gap-1">
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center gap-6">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`relative px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
+                className={`text-sm font-medium transition-colors hover:text-blue-600 ${
                   isActive(item.href)
-                    ? 'text-slate-900 bg-amber-50'
-                    : 'text-slate-500 hover:text-slate-800 hover:bg-slate-50'
+                    ? 'text-blue-600 border-b-2 border-blue-600'
+                    : 'text-gray-600'
                 }`}
               >
                 {item.name}
-                {isActive(item.href) && (
-                  <span className="absolute bottom-1 left-4 right-4 h-0.5 bg-amber-500 rounded-full" />
-                )}
               </Link>
             ))}
-
-            {/* Admin */}
+            <Link
+              href="/promotions"
+              className="text-sm font-medium text-red-500 hover:text-red-600 transition-colors"
+            >
+              <Tag className="h-4 w-4 inline mr-1" />
+              Promos
+            </Link>
             <Link
               href="/admin"
-              className={`relative px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 flex items-center gap-1.5 ${
+              className={`text-sm font-medium transition-colors hover:text-blue-600 ${
                 isActive('/admin')
-                  ? 'text-slate-900 bg-amber-50'
-                  : 'text-slate-500 hover:text-slate-800 hover:bg-slate-50'
+                  ? 'text-blue-600 border-b-2 border-blue-600'
+                  : 'text-gray-600'
               }`}
             >
-              <Settings className="h-3.5 w-3.5" />
+              <Settings className="h-4 w-4 inline mr-1" />
               Admin
-              {isActive('/admin') && (
-                <span className="absolute bottom-1 left-4 right-4 h-0.5 bg-amber-500 rounded-full" />
-              )}
             </Link>
           </nav>
 
-          {/* ═══ RIGHT ACTIONS ═══ */}
-          <div className="flex items-center gap-2 md:gap-3">
-            {/* WhatsApp */}
+          {/* Right Actions */}
+          <div className="flex items-center gap-2">
             <a
               href={`https://wa.me/${settings?.whatsappNumber || '237600000000'}`}
               target="_blank"
-              rel="noopener noreferrer"
-              className="hidden md:inline-flex items-center gap-1.5 bg-emerald-500 hover:bg-emerald-600 text-white px-3.5 py-2 rounded-xl text-sm font-medium transition-all duration-200 shadow-sm shadow-emerald-500/20 hover:shadow-md hover:shadow-emerald-500/20"
+              className="hidden md:flex items-center gap-1.5 bg-green-500 hover:bg-green-600 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition-colors"
             >
-              <MessageCircle className="h-4 w-4" />
+              <Phone className="h-4 w-4" />
               WhatsApp
             </a>
 
-            {/* Admin shortcut (desktop) */}
             <Link
               href="/admin"
-              className="hidden md:inline-flex items-center gap-1.5 bg-slate-900 hover:bg-slate-800 text-white px-3.5 py-2 rounded-xl text-sm font-medium transition-all duration-200"
+              className="hidden md:flex items-center gap-1.5 bg-blue-500 hover:bg-blue-600 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition-colors"
             >
               <Settings className="h-4 w-4" />
               Admin
             </Link>
 
-            {/* Cart */}
             <button
               onClick={onCartOpen}
-              className="relative p-2.5 hover:bg-slate-100 rounded-xl transition-colors group"
-              aria-label="Ouvrir le panier"
+              className="relative p-2 hover:bg-gray-100 rounded-full transition-colors"
             >
-              <ShoppingBag className="h-5 w-5 text-slate-600 group-hover:text-slate-900 transition-colors" />
+              <ShoppingBag className="h-5 w-5 text-gray-600" />
               {totalItems > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 bg-amber-500 text-slate-900 text-[10px] font-bold rounded-full h-5 w-5 flex items-center justify-center shadow-sm animate-in zoom-in duration-200">
+                <span className="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center animate-pulse">
                   {totalItems > 99 ? '99+' : totalItems}
                 </span>
               )}
             </button>
 
-            {/* Mobile Menu Toggle */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="md:hidden p-2.5 hover:bg-slate-100 rounded-xl transition-colors"
-              aria-label={isMenuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
+              className="md:hidden p-2 hover:bg-gray-100 rounded-full transition-colors"
             >
-              {isMenuOpen ? (
-                <X className="h-5 w-5 text-slate-700" />
-              ) : (
-                <Menu className="h-5 w-5 text-slate-700" />
-              )}
+              {isMenuOpen ? <X className="h-5 w-5 text-gray-600" /> : <Menu className="h-5 w-5 text-gray-600" />}
             </button>
           </div>
         </div>
 
-        {/* ═══ MOBILE NAVIGATION ═══ */}
+        {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden py-4 border-t border-slate-100 animate-in slide-in-from-top-2 duration-200">
+          <div className="md:hidden py-4 border-t border-gray-100 animate-slideDown">
             <div className="flex flex-col gap-1">
-              {navItems.map((item) => (
+              {[...navItems, { name: 'Promotions', href: '/promotions' }, { name: 'FAQ', href: '/faq' }].map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
                   onClick={() => setIsMenuOpen(false)}
-                  className={`px-4 py-3 rounded-xl transition-all duration-200 text-sm font-medium ${
+                  className={`px-4 py-2.5 rounded-lg transition-colors ${
                     isActive(item.href)
-                      ? 'bg-amber-50 text-amber-700'
-                      : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                      ? 'bg-blue-50 text-blue-600 font-semibold'
+                      : 'text-gray-600 hover:bg-gray-50'
                   }`}
                 >
                   {item.name}
                 </Link>
               ))}
-
-              <div className="h-px bg-slate-100 my-1" />
-
               <Link
                 href="/admin"
                 onClick={() => setIsMenuOpen(false)}
-                className={`px-4 py-3 rounded-xl transition-all duration-200 text-sm font-medium flex items-center gap-2.5 ${
-                  isActive('/admin')
-                    ? 'bg-amber-50 text-amber-700'
-                    : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
-                }`}
+                className="px-4 py-2.5 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors flex items-center gap-2"
               >
                 <Settings className="h-4 w-4" />
                 Administration
               </Link>
 
               {isAuthenticated && (
-                <>
-                  <Link
-                    href="/admin"
-                    onClick={() => setIsMenuOpen(false)}
-                    className="px-4 py-3 rounded-xl text-slate-600 hover:bg-slate-50 transition-all text-sm font-medium flex items-center gap-2.5"
-                  >
-                    <User className="h-4 w-4" />
-                    Dashboard
-                  </Link>
-                  <button
-                    onClick={() => {
-                      logout()
-                      setIsMenuOpen(false)
-                    }}
-                    className="px-4 py-3 rounded-xl text-rose-600 hover:bg-rose-50 transition-all text-sm font-medium flex items-center gap-2.5 w-full text-left"
-                  >
-                    <LogOut className="h-4 w-4" />
-                    Déconnexion
-                  </button>
-                </>
+                <button
+                  onClick={() => {
+                    logout()
+                    setIsMenuOpen(false)
+                  }}
+                  className="px-4 py-2.5 rounded-lg text-red-600 hover:bg-red-50 transition-colors flex items-center gap-2"
+                >
+                  <LogOut className="h-4 w-4" />
+                  Déconnexion
+                </button>
               )}
-
               <a
                 href={`https://wa.me/${settings?.whatsappNumber || '237600000000'}`}
                 target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-3 rounded-xl font-medium transition-all mt-2 shadow-sm shadow-emerald-500/20"
+                className="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-4 py-2.5 rounded-lg font-medium transition-colors mx-4 mt-2"
               >
-                <MessageCircle className="h-4 w-4" />
-                Discuter sur WhatsApp
+                <Phone className="h-4 w-4" />
+                WhatsApp
               </a>
             </div>
           </div>
