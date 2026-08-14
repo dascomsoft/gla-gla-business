@@ -1,5 +1,7 @@
 'use client'
 
+export const dynamic = 'force-dynamic'
+
 import { ArrowLeftRight, Clock, Package, CheckCircle, AlertCircle } from 'lucide-react'
 import Link from 'next/link'
 

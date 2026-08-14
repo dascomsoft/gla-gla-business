@@ -1,5 +1,7 @@
 'use client'
 
+export const dynamic = 'force-dynamic'
+
 import { useState } from 'react'
 import { ChevronDown, ChevronUp, Search, MessageCircle } from 'lucide-react'
 import Link from 'next/link'

@@ -1,5 +1,7 @@
 'use client'
 
+export const dynamic = 'force-dynamic'
+
 import { Truck, MapPin, Clock, Package, CheckCircle } from 'lucide-react'
 import { useSettings } from '@/hooks/useSettings'
 

@@ -1,5 +1,7 @@
 'use client'
 
+export const dynamic = 'force-dynamic'
+
 import { useSettings } from '@/hooks/useSettings'
 
 export default function TermsPage() {

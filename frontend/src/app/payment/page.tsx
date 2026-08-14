@@ -1,5 +1,7 @@
 'use client'
 
+export const dynamic = 'force-dynamic'
+
 import { CreditCard, Smartphone, Banknote, Shield, CheckCircle } from 'lucide-react'
 
 export default function PaymentPage() {

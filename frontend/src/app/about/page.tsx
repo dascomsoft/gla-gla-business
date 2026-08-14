@@ -1,5 +1,7 @@
 'use client'
 
+export const dynamic = 'force-dynamic'
+
 import { useSettings } from '@/hooks/useSettings'
 import { Users, Award, Truck, Shield, Heart, Star, Clock, ThumbsUp } from 'lucide-react'
 import Image from 'next/image'

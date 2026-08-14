@@ -1,5 +1,7 @@
 'use client'
 
+export const dynamic = 'force-dynamic'
+
 import { Star, User, Quote } from 'lucide-react'
 
 export default function TestimonialsPage() {
