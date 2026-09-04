@@ -67,7 +67,6 @@ export default function HomePage() {
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([])
   const [recentProducts, setRecentProducts] = useState<Product[]>([])
   const [categories, setCategories] = useState<Category[]>([])
-  const [loading, setLoading] = useState(true)
   const [email, setEmail] = useState('')
   const [subscribed, setSubscribed] = useState(false)
   const { addItem } = useCart()
@@ -91,8 +90,6 @@ export default function HomePage() {
         setFeaturedProducts([])
         setCategories([])
         setRecentProducts([])
-      } finally {
-        setLoading(false)
       }
     }
 
@@ -106,17 +103,6 @@ export default function HomePage() {
       setEmail('')
       setTimeout(() => setSubscribed(false), 4000)
     }
-  }
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
-        <div className="flex flex-col items-center gap-4">
-          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-slate-900"></div>
-          <p className="text-sm text-gray-500">Chargement de votre expérience...</p>
-        </div>
-      </div>
-    )
   }
 
   const categoriesToShow = Array.isArray(categories) ? categories.slice(0, 8) : []
