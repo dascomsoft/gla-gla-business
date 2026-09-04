@@ -187,7 +187,7 @@ export default function AdminProducts() {
                 </div>
 
                 {/* Ligne 3 : actions (zones tactiles ≥ 40px) */}
-                <div className="flex items-center justify-end gap-1 mt-3 pt-3 border-t border-gray-100">
+                <div className="flex items-center justify-start gap-1 mt-3 pt-3 border-t border-gray-100">
                   <Link
                     href={`/products/${product.slug}`}
                     target="_blank"
