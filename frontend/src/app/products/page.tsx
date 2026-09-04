@@ -38,6 +38,7 @@ export default function ProductsPage() {
   const [loading, setLoading] = useState(true)
   const [email, setEmail] = useState('')
   const [subscribed, setSubscribed] = useState(false)
+  const [showFilters, setShowFilters] = useState(false) // UI state uniquement
 
   const [pagination, setPagination] = useState({
     page: 1,
@@ -150,9 +151,22 @@ export default function ProductsPage() {
     filters.maxPrice ||
     filters.available
 
+  const resetFilters = () => {
+    setFilters({
+      search: '',
+      category: '',
+      brand: '',
+      minPrice: '',
+      maxPrice: '',
+      available: '',
+      sort: '-createdAt'
+    })
+    setPagination((prev) => ({ ...prev, page: 1 }))
+  }
+
   return (
-    <div className="min-h-screen bg-white">
-      {/* Hero */}
+    <div className="min-h-screen bg-slate-50">
+      {/* ── Hero ─────────────────────────────────────────── */}
       <section className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white relative overflow-hidden">
         <div className="absolute inset-0 opacity-[0.03]">
           <svg width="100%" height="100%">
@@ -166,30 +180,38 @@ export default function ProductsPage() {
         </div>
         <div className="absolute top-[-60px] right-[-60px] w-[200px] h-[200px] rounded-full bg-amber-500/5 blur-3xl" />
 
-        <div className="container relative py-10 md:py-14">
-          <nav className="flex items-center gap-2 text-sm text-slate-400 mb-4">
-            <Link href="/" className="hover:text-white transition-colors flex items-center gap-1">
+        <div className="container relative py-8 md:py-14 px-4">
+          <nav className="flex items-center gap-1.5 text-xs md:text-sm text-slate-400 mb-4 overflow-x-auto whitespace-nowrap">
+            <Link href="/" className="hover:text-white transition-colors flex items-center gap-1 flex-shrink-0">
               <Home className="h-3.5 w-3.5" />
               Accueil
             </Link>
-            <ChevronRight className="h-3.5 w-3.5" />
-            <span className="text-amber-400 font-medium">Produits</span>
+            <ChevronRight className="h-3.5 w-3.5 flex-shrink-0" />
+            <span className="text-amber-400 font-medium flex-shrink-0">Produits</span>
             {filters.search && (
               <>
-                <ChevronRight className="h-3.5 w-3.5" />
-                <span className="text-slate-300">&quot;{filters.search}&quot;</span>
+                <ChevronRight className="h-3.5 w-3.5 flex-shrink-0" />
+                <span className="text-slate-300 truncate">&quot;{filters.search}&quot;</span>
               </>
             )}
           </nav>
 
-          <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-3">
+          <h1 className="text-2xl md:text-4xl font-bold tracking-tight mb-2 md:mb-3">
             {filters.search ? (
-              <>Resultats pour <span className="text-amber-400">&quot;{filters.search}&quot;</span></>
+              <>
+                Resultats pour{' '}
+                <span className="text-amber-400 break-words">&quot;{filters.search}&quot;</span>
+              </>
             ) : (
-              <>Trouvez votre <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-amber-300">bonheur</span></>
+              <>
+                Trouvez votre{' '}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-amber-300">
+                  bonheur
+                </span>
+              </>
             )}
           </h1>
-          <p className="text-slate-400 max-w-xl">
+          <p className="text-slate-400 text-sm md:text-base max-w-xl">
             {pagination.total > 0
               ? `${pagination.total} produits selectionnes avec soin. Livraison 24-48h partout au Cameroun.`
               : 'Explorez notre catalogue et trouvez le produit qui vous correspond.'}
@@ -197,9 +219,9 @@ export default function ProductsPage() {
         </div>
       </section>
 
-      {/* Trust Bar */}
-      <section className="container -mt-5 relative z-10">
-        <div className="bg-white rounded-xl shadow-lg shadow-slate-900/5 border border-slate-100 p-4 flex flex-wrap items-center justify-center md:justify-between gap-3">
+      {/* ── Trust Bar ────────────────────────────────────── */}
+      <section className="container -mt-5 relative z-10 px-4">
+        <div className="bg-white rounded-2xl shadow-lg shadow-slate-900/5 border border-slate-100 p-3.5 grid grid-cols-2 md:flex md:flex-wrap md:items-center md:justify-between gap-3">
           {[
             { icon: Truck, text: 'Livraison 24-48h' },
             { icon: ShieldCheck, text: 'Paiement securise' },
@@ -210,16 +232,16 @@ export default function ProductsPage() {
               <div className="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center flex-shrink-0">
                 <item.icon className="h-4 w-4 text-amber-600" />
               </div>
-              <span className="font-medium">{item.text}</span>
+              <span className="font-medium whitespace-nowrap">{item.text}</span>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Promo Banner */}
+      {/* ── Promo Banner ─────────────────────────────────── */}
       {!filters.search && !hasActiveFilters && (
-        <section className="container mt-6">
-          <div className="relative bg-gradient-to-r from-amber-50 to-yellow-50 border border-amber-200 rounded-2xl p-4 md:p-5 flex flex-col sm:flex-row items-center justify-between gap-4 overflow-hidden">
+        <section className="container mt-5 px-4">
+          <div className="relative bg-gradient-to-r from-amber-50 to-yellow-50 border border-amber-200 rounded-2xl p-4 md:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-amber-400/10 rounded-full blur-2xl" />
             <div className="relative flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-amber-500 flex items-center justify-center flex-shrink-0 shadow-sm">
@@ -236,7 +258,7 @@ export default function ProductsPage() {
             </div>
             <button
               onClick={() => handleFilterChange({ sort: '-price' })}
-              className="relative bg-slate-900 hover:bg-slate-800 text-white px-5 py-2.5 rounded-xl text-sm font-medium transition-all shadow-sm hover:shadow-md flex items-center gap-2"
+              className="relative w-full sm:w-auto bg-slate-900 active:bg-slate-700 hover:bg-slate-800 text-white px-5 py-3 sm:py-2.5 rounded-xl text-sm font-semibold transition-all shadow-sm active:shadow-md flex items-center justify-center gap-2"
             >
               Voir les offres
               <ArrowRight className="h-4 w-4" />
@@ -245,120 +267,133 @@ export default function ProductsPage() {
         </section>
       )}
 
-      {/* Search */}
-      <section className="container mt-6">
+      {/* ── Search ───────────────────────────────────────── */}
+      <section className="container mt-5 px-4">
         <ProductSearch
           value={filters.search}
           onChange={(value: string) => handleFilterChange({ search: value })}
         />
       </section>
 
-      {/* Main Content */}
-      <section className="container py-6 md:py-8">
-        <div className="grid lg:grid-cols-4 gap-6">
+      {/* ── Main Content ─────────────────────────────────── */}
+      <section className="container py-6 md:py-8 px-4">
+        <div className="grid lg:grid-cols-4 gap-5 lg:gap-6">
           {/* Sidebar */}
           <div className="lg:col-span-1 space-y-4">
-            <div className="flex items-center gap-2 mb-2">
-              <SlidersHorizontal className="h-4 w-4 text-slate-500" />
-              <span className="font-semibold text-slate-800 text-sm">Filtres</span>
+            {/* Bouton filtres mobile */}
+            <button
+              onClick={() => setShowFilters(!showFilters)}
+              className="lg:hidden w-full flex items-center justify-between bg-white border border-slate-200 rounded-2xl px-4 py-3 text-sm font-semibold text-slate-700 active:bg-slate-50 transition-colors"
+            >
+              <span className="flex items-center gap-2">
+                <SlidersHorizontal className="h-4 w-4 text-slate-500" />
+                Filtres
+                {hasActiveFilters && <span className="w-2 h-2 rounded-full bg-amber-500" />}
+              </span>
+              <ChevronRight
+                className={`h-4 w-4 text-slate-400 transition-transform ${showFilters ? 'rotate-90' : ''}`}
+              />
+            </button>
+
+            <div className={`space-y-4 ${showFilters ? 'block' : 'hidden'} lg:block`}>
+              <div className="hidden lg:flex items-center gap-2 mb-2">
+                <SlidersHorizontal className="h-4 w-4 text-slate-500" />
+                <span className="font-semibold text-slate-800 text-sm">Filtres</span>
+                {hasActiveFilters && (
+                  <button
+                    onClick={resetFilters}
+                    className="ml-auto text-xs text-rose-600 hover:text-rose-700 font-medium"
+                  >
+                    Reinitialiser
+                  </button>
+                )}
+              </div>
+
+              <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+                <ProductFilters
+                  categories={categories}
+                  filters={filters}
+                  onFilterChange={handleFilterChange}
+                />
+              </div>
+
+              {/* Filtres actifs : reset visible aussi sur mobile */}
               {hasActiveFilters && (
                 <button
-                  onClick={() => {
-                    setFilters({
-                      search: '',
-                      category: '',
-                      brand: '',
-                      minPrice: '',
-                      maxPrice: '',
-                      available: '',
-                      sort: '-createdAt'
-                    })
-                    setPagination((prev) => ({ ...prev, page: 1 }))
-                  }}
-                  className="ml-auto text-xs text-rose-600 hover:text-rose-700 font-medium"
+                  onClick={resetFilters}
+                  className="lg:hidden w-full text-center text-xs text-rose-600 font-medium py-2"
                 >
-                  Reinitialiser
+                  Reinitialiser les filtres
                 </button>
               )}
-            </div>
 
-            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm">
-              <ProductFilters
-                categories={categories}
-                filters={filters}
-                onFilterChange={handleFilterChange}
-              />
-            </div>
-
-            {/* CTA WhatsApp - Sidebar desktop */}
-            <div className="hidden lg:block bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-5 text-white relative overflow-hidden">
-              <div className="absolute top-[-20px] right-[-20px] w-24 h-24 bg-emerald-500/10 rounded-full blur-xl" />
-              <div className="relative">
-                <div className="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center mb-3">
-                  <MessageCircle className="h-5 w-5 text-emerald-400" />
+              {/* CTA WhatsApp - desktop */}
+              <div className="hidden lg:block bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-5 text-white relative overflow-hidden">
+                <div className="absolute top-[-20px] right-[-20px] w-24 h-24 bg-emerald-500/10 rounded-full blur-xl" />
+                <div className="relative">
+                  <div className="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center mb-3">
+                    <MessageCircle className="h-5 w-5 text-emerald-400" />
+                  </div>
+                  <h3 className="font-semibold text-sm mb-1">Besoin d&apos;aide ?</h3>
+                  <p className="text-xs text-slate-400 mb-4 leading-relaxed">
+                    Notre equipe vous guide pour choisir le bon produit. Reponse en moins de 15 min.
+                  </p>
+                  <a
+                    href={`https://wa.me/${settings?.whatsappNumber || '237600000000'}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 bg-emerald-500 hover:bg-emerald-400 text-white px-4 py-2.5 rounded-xl text-xs font-semibold transition-all shadow-sm shadow-emerald-500/20 w-full justify-center"
+                  >
+                    <MessageCircle className="h-3.5 w-3.5" />
+                    Discuter sur WhatsApp
+                  </a>
                 </div>
-                <h3 className="font-semibold text-sm mb-1">Besoin d&apos;aide ?</h3>
-                <p className="text-xs text-slate-400 mb-4 leading-relaxed">
-                  Notre equipe vous guide pour choisir le bon produit. Reponse en moins de 15 min.
-                </p>
-                <a
-                  href={`https://wa.me/${settings?.whatsappNumber || '237600000000'}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 bg-emerald-500 hover:bg-emerald-400 text-white px-4 py-2 rounded-xl text-xs font-semibold transition-all shadow-sm shadow-emerald-500/20 w-full justify-center"
-                >
-                  <MessageCircle className="h-3.5 w-3.5" />
-                  Discuter sur WhatsApp
-                </a>
               </div>
-            </div>
 
-            {/* Mini trust - Sidebar desktop */}
-            <div className="hidden lg:block bg-amber-50 rounded-2xl p-5 border border-amber-100">
-              <h3 className="font-semibold text-amber-900 text-sm mb-3 flex items-center gap-2">
-                <Sparkles className="h-4 w-4" />
-                Pourquoi nous choisir ?
-              </h3>
-              <ul className="space-y-2.5">
-                {[
-                  'Produits inspectes un par un',
-                  'Paiement a la livraison',
-                  'Retour sous 7 jours',
-                  'Conseil personnalise',
-                ].map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-xs text-amber-800/80">
-                    <CheckCircle className="h-3.5 w-3.5 text-amber-500 flex-shrink-0 mt-0.5" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
+              {/* Mini trust - desktop */}
+              <div className="hidden lg:block bg-amber-50 rounded-2xl p-5 border border-amber-100">
+                <h3 className="font-semibold text-amber-900 text-sm mb-3 flex items-center gap-2">
+                  <Sparkles className="h-4 w-4" />
+                  Pourquoi nous choisir ?
+                </h3>
+                <ul className="space-y-2.5">
+                  {[
+                    'Produits inspectes un par un',
+                    'Paiement a la livraison',
+                    'Retour sous 7 jours',
+                    'Conseil personnalise',
+                  ].map((item, i) => (
+                    <li key={i} className="flex items-start gap-2 text-xs text-amber-800/80">
+                      <CheckCircle className="h-3.5 w-3.5 text-amber-500 flex-shrink-0 mt-0.5" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </div>
 
           {/* Product Grid Area */}
           <div className="lg:col-span-3">
             {/* Results Bar */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5 bg-slate-50 rounded-xl border border-slate-100 p-3">
+            <div className="flex flex-col gap-3 mb-5 bg-white rounded-2xl border border-slate-100 shadow-sm p-3.5 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-center gap-2">
-                <ShoppingBag className="h-4 w-4 text-slate-400" />
-                <p className="text-sm text-slate-600">
+                <ShoppingBag className="h-4 w-4 text-slate-400 flex-shrink-0" />
+                <p className="text-sm text-slate-600 whitespace-nowrap">
                   <span className="font-bold text-slate-900">{pagination.total}</span> produit
-                  {pagination.total > 1 ? 's' : ''} trouve
-                  {pagination.total > 1 ? 's' : ''}
+                  {pagination.total > 1 ? 's' : ''} trouve{pagination.total > 1 ? 's' : ''}
                 </p>
                 {hasActiveFilters && (
-                  <span className="text-xs text-slate-400 hidden sm:inline">
-                    &middot; filtres actifs
-                  </span>
+                  <span className="text-xs text-slate-400 hidden sm:inline">&middot; filtres actifs</span>
                 )}
               </div>
 
-              <div className="flex items-center gap-3">
-                <label className="text-xs text-slate-500 hidden sm:inline">Trier par :</label>
+              <div className="flex items-center gap-2.5">
+                <label className="text-xs text-slate-500 whitespace-nowrap">Trier :</label>
                 <select
                   value={filters.sort}
                   onChange={(e) => handleFilterChange({ sort: e.target.value })}
-                  className="px-3 py-2 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-400/50 focus:border-amber-400 outline-none text-sm text-slate-700 shadow-sm cursor-pointer hover:border-slate-300 transition-colors"
+                  className="flex-1 sm:flex-none px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-400/50 focus:border-amber-400 outline-none text-sm text-slate-700 cursor-pointer active:border-slate-300 transition-colors"
                 >
                   <option value="-createdAt">Plus recent</option>
                   <option value="price">Prix croissant</option>
@@ -368,9 +403,9 @@ export default function ProductsPage() {
               </div>
             </div>
 
-            {/* Progress indicator */}
+            {/* Progress indicator - desktop */}
             {pagination.total > 0 && (
-              <div className="mb-4">
+              <div className="mb-4 hidden sm:block">
                 <div className="flex items-center justify-between text-xs text-slate-400 mb-1.5">
                   <span>
                     Affichage {(pagination.page - 1) * pagination.limit + 1} -{' '}
@@ -390,31 +425,19 @@ export default function ProductsPage() {
 
             {/* Empty state */}
             {!loading && products.length === 0 && (
-              <div className="text-center py-16 bg-slate-50 rounded-2xl border border-slate-100">
+              <div className="text-center py-14 bg-white rounded-2xl border border-slate-100 shadow-sm px-4">
                 <div className="w-16 h-16 rounded-2xl bg-slate-100 flex items-center justify-center mx-auto mb-4">
                   <SearchX className="h-8 w-8 text-slate-300" />
                 </div>
-                <h3 className="text-lg font-semibold text-slate-800 mb-2">
-                  Aucun produit trouve
-                </h3>
+                <h3 className="text-lg font-semibold text-slate-800 mb-2">Aucun produit trouve</h3>
                 <p className="text-sm text-slate-500 max-w-sm mx-auto mb-6">
-                  Essayez de modifier vos filtres ou utilisez des mots-cles differents. Notre equipe peut aussi vous aider !
+                  Essayez de modifier vos filtres ou utilisez des mots-cles differents. Notre equipe
+                  peut aussi vous aider !
                 </p>
-                <div className="flex flex-wrap items-center justify-center gap-3">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 max-w-xs sm:max-w-none mx-auto">
                   <button
-                    onClick={() => {
-                      setFilters({
-                        search: '',
-                        category: '',
-                        brand: '',
-                        minPrice: '',
-                        maxPrice: '',
-                        available: '',
-                        sort: '-createdAt'
-                      })
-                      setPagination((prev) => ({ ...prev, page: 1 }))
-                    }}
-                    className="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2.5 rounded-xl text-sm font-medium transition-colors"
+                    onClick={resetFilters}
+                    className="bg-slate-900 active:bg-slate-700 hover:bg-slate-800 text-white px-5 py-3 rounded-xl text-sm font-semibold transition-colors"
                   >
                     Reinitialiser les filtres
                   </button>
@@ -422,7 +445,7 @@ export default function ProductsPage() {
                     href={`https://wa.me/${settings?.whatsappNumber || '237600000000'}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 bg-emerald-500 hover:bg-emerald-600 text-white px-5 py-2.5 rounded-xl text-sm font-medium transition-colors"
+                    className="inline-flex items-center justify-center gap-1.5 bg-emerald-500 active:bg-emerald-600 hover:bg-emerald-600 text-white px-5 py-3 rounded-xl text-sm font-semibold transition-colors"
                   >
                     <MessageCircle className="h-4 w-4" />
                     Demander de l&apos;aide
@@ -456,8 +479,8 @@ export default function ProductsPage() {
         </div>
       </section>
 
-      {/* CTA WhatsApp - Mobile */}
-      <section className="container pb-8 lg:hidden">
+      {/* ── CTA WhatsApp - Mobile ────────────────────────── */}
+      <section className="container pb-8 px-4 lg:hidden">
         <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-6 text-white text-center relative overflow-hidden">
           <div className="absolute top-[-30px] right-[-30px] w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl" />
           <div className="relative">
@@ -466,13 +489,14 @@ export default function ProductsPage() {
             </div>
             <h3 className="font-semibold text-lg mb-2">Besoin d&apos;aide pour choisir ?</h3>
             <p className="text-sm text-slate-400 mb-5 max-w-sm mx-auto">
-              Notre equipe vous repond sur WhatsApp en moins de 15 minutes. Gratuit et sans engagement.
+              Notre equipe vous repond sur WhatsApp en moins de 15 minutes. Gratuit et sans
+              engagement.
             </p>
             <a
               href={`https://wa.me/${settings?.whatsappNumber || '237600000000'}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-white px-6 py-3 rounded-xl font-semibold transition-all shadow-lg shadow-emerald-500/20"
+              className="inline-flex items-center justify-center gap-2 w-full bg-emerald-500 active:bg-emerald-400 hover:bg-emerald-400 text-white px-6 py-3.5 rounded-xl font-semibold transition-all shadow-lg shadow-emerald-500/20"
             >
               <MessageCircle className="h-5 w-5" />
               Discuter sur WhatsApp
@@ -481,26 +505,25 @@ export default function ProductsPage() {
         </div>
       </section>
 
-      {/* Newsletter */}
-      <section className="container pb-16">
-        <div className="relative bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 rounded-3xl p-8 md:p-12 overflow-hidden">
+      {/* ── Newsletter ───────────────────────────────────── */}
+      <section className="container pb-16 px-4">
+        <div className="relative bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 rounded-3xl p-7 md:p-12 overflow-hidden">
           <div className="absolute top-0 right-0 w-64 h-64 bg-amber-500/5 rounded-full blur-3xl" />
           <div className="relative max-w-xl mx-auto text-center">
             <div className="inline-flex items-center gap-2 bg-white/10 rounded-full px-4 py-1.5 mb-5">
               <Mail className="h-3.5 w-3.5 text-amber-400" />
-              <span className="text-sm text-slate-300">Ne ratez aucune promo</span>
+              <span className="text-xs md:text-sm text-slate-300">Ne ratez aucune promo</span>
             </div>
-            <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
-              Soyez le premier averti
-            </h2>
-            <p className="text-slate-400 mb-8 text-sm md:text-base">
-              Inscrivez-vous et recevez nos offres flash, nouveautes et codes promo avant tout le monde.
+            <h2 className="text-xl md:text-3xl font-bold text-white mb-3">Soyez le premier averti</h2>
+            <p className="text-slate-400 mb-7 text-sm md:text-base">
+              Inscrivez-vous et recevez nos offres flash, nouveautes et codes promo avant tout le
+              monde.
             </p>
 
             {subscribed ? (
               <div className="bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 rounded-xl py-4 px-6 inline-flex items-center gap-2">
                 <CheckCircle className="h-5 w-5" />
-                <span className="font-medium">Merci ! Vous etes inscrit.</span>
+                <span className="font-medium text-sm">Merci ! Vous etes inscrit.</span>
               </div>
             ) : (
               <form
@@ -513,11 +536,11 @@ export default function ProductsPage() {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="votre@email.com"
                   required
-                  className="flex-1 px-5 py-3 rounded-xl bg-white/10 border border-white/10 text-white placeholder-slate-400 outline-none focus:border-amber-400/50 transition-colors text-sm"
+                  className="flex-1 px-5 py-3 rounded-xl bg-white/10 border border-white/10 text-white placeholder-slate-400 outline-none focus:border-amber-400/50 transition-colors text-[16px] sm:text-sm"
                 />
                 <button
                   type="submit"
-                  className="bg-amber-500 hover:bg-amber-400 text-slate-900 font-semibold px-6 py-3 rounded-xl transition-colors flex items-center justify-center gap-2 text-sm"
+                  className="bg-amber-500 active:bg-amber-300 hover:bg-amber-400 text-slate-900 font-semibold px-6 py-3 rounded-xl transition-colors flex items-center justify-center gap-2 text-sm"
                 >
                   <Send className="h-4 w-4" />
                   S&apos;inscrire
